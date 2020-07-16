@@ -1,43 +1,42 @@
 ﻿using System;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support;
+using System.IO;
+using OpenQA.Selenium;
+using System.Threading;
 
+//resolved all non-selenium syntax errors for Java > C#
 
 namespace SeleniumSL_CS
 {
     class Program
     {
-        static String dataLog = "";
+        static string dataLog = "";
 
-        static String currentDirectory = System.getProperty("user.dir");
+        static string currentDirectory = Directory.GetCurrentDirectory();
 
         // NOTE - CONFIGURE BEFORE USE!! MAC = 1, PC = 2
         static int userNum = 1;
 
         //  return current date/time in readable format
-        public static String getTime()
+        public static string getTime()
         {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd \'at\' HH:mm:ss z");
-            Date date = new Date(System.currentTimeMillis());
-            return formatter.format(date);
+            return DateTime.Now.ToString("yyyyMMdd hh:mm:ss");
         }
 
-        public static String nameByDate()
+        public static string nameByDate()
         {
-            SimpleDateFormat formatter = new SimpleDateFormat("MMddyyyy\'A\'");
-            Date date = new Date(System.currentTimeMillis());
-            return formatter.format(date);
+            return DateTime.Now.ToString("yyyyMMdd");
         }
 
         //  append string to log
-        public static void writeToLog(String data)
+        public static void writeToLog(string data)
         {
             dataLog = (dataLog + ("\n" + data));
         }
 
-        public static void main(String[] args)
+        public static void main(string[] args)
         {
-            App.writeToLog(("++ Test initialized at " + App.getTime()));
+            Console.WriteLine("++ Test initialized at " + getTime());
             //  configure driver executable, initialize
             if ((userNum == 1))
             {
@@ -53,19 +52,19 @@ namespace SeleniumSL_CS
             // add 30 sec implicit wait for variable connection speeds
             // driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
             //  execute test methods in sequence
-            App.searchGoogle(driver);
-            App.loginTestArea(driver);
+            searchGoogle(driver);
+            loginTestArea(driver);
             //  testHomeModule(driver);
-            // Thread.sleep(3000);
-            App.testChallenges(driver);
+            // Thread.Sleep(3000);
+            testChallenges(driver);
             // testPublish(driver);
-            App.testFeed(driver);
-            App.testReporting(driver);
+            testFeed(driver);
+            testReporting(driver);
             //  close the browser
-            // Thread.sleep(5000);
+            // Thread.Sleep(5000);
             driver.close();
-            App.writeToLog(("++ Test completed at " + App.getTime()));
-            System.out.println(dataLog);
+            writeToLog("++ Test completed at " + getTime());
+            Console.WriteLine(dataLog);
         }
 
         //  initialize a browser to google.com and search for "socialladder". click the
@@ -74,55 +73,55 @@ namespace SeleniumSL_CS
         {
             //  open browser with google
             wd.get("https://www.google.com");
-            App.writeToLog("Browser loaded to www.google.com.");
+            writeToLog("Browser loaded to www.google.com.");
             try
             {
-                Thread.sleep(3000);
-                WebElement searchField = wd.findElement(By.xpath("//*[@id=\\\"tsf\\\"]/div[2]/div[1]/div[1]/div/div[2]/input"));
-                WebElement searchButton = wd.findElement(By.xpath("//*[@id=\\\"tsf\\\"]/div[2]/div[1]/div[2]/div[2]/div[2]/center/input[1]"));
+                Thread.Sleep(3000);
+                IWebElement searchField = wd.findElement(By.XPath("//*[@id=\\\"tsf\\\"]/div[2]/div[1]/div[1]/div/div[2]/input"));
+                WebElement searchButton = wd.findElement(By.XPath("//*[@id=\\\"tsf\\\"]/div[2]/div[1]/div[2]/div[2]/div[2]/center/input[1]"));
                 searchField.click();
                 searchField.sendKeys("socialladder");
                 searchButton.click();
             }
             catch (Exception e)
             {
-                System.out.println(e);
+                Console.WriteLine(e);
             }
 
-            App.writeToLog("Searching Google for \\\"socialladder\\\".");
+            writeToLog("Searching Google for \\\"socialladder\\\".");
             try
             {
-                Thread.sleep(3000);
+                Thread.Sleep(3000);
                 WebElement slSiteGoogle = wd.findElement(By.partialLinkText("SocialLadder |"));
                 slSiteGoogle.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            App.writeToLog(">> Site located on Google - PASS");
+            writeToLog(">> Site located on Google - PASS");
         }
 
         //  starting from socialladder.rkiapps.com, click login button and use test
         //  credentials to access area
         public static void loginTestArea(WebDriver wd)
         {
-            App.writeToLog(">> SL website loaded - PASS");
-            WebElement slSiteLogin = wd.findElement(By.xpath("/html/body/div[1]/nav/div[1]/div[2]/ul/li[6]/a"));
+            writeToLog(">> SL website loaded - PASS");
+            WebElement slSiteLogin = wd.findElement(By.XPath("/html/body/div[1]/nav/div[1]/div[2]/ul/li[6]/a"));
             slSiteLogin.click();
-            App.writeToLog(">> SL login page loaded - PASS");
-            Thread.sleep(2000);
+            writeToLog(">> SL login page loaded - PASS");
+            Thread.Sleep(2000);
             WebElement emailInput = wd.findElement(By.id("input_0"));
             emailInput.click();
             // manually input username
-            emailInput.sendKeys("onebulletboy@socialladderapp.com");
+            emailInput.sendKeys("onebulletboy@socialladdercom");
             WebElement passwordInput = wd.findElement(By.id("input_1"));
             passwordInput.click();
             // manually input password
             passwordInput.sendKeys("social33!");
-            App.writeToLog("Credentials entered.");
-            WebElement loginButton = wd.findElement(By.xpath("/html/body/div/md-content[1]/button"));
+            writeToLog("Credentials entered.");
+            WebElement loginButton = wd.findElement(By.XPath("/html/body/div/md-content[1]/button"));
             loginButton.click();
         }
 
@@ -136,267 +135,267 @@ namespace SeleniumSL_CS
         {
             try
             {
-                Thread.sleep(3000);
-                WebElement challengeBtn = wd.findElement(By.xpath("/html/body/main-component/div/menu-component/md-sidenav/nav/a[2]/span"));
+                Thread.Sleep(3000);
+                WebElement challengeBtn = wd.findElement(By.XPath("/html/body/main-component/div/menu-component/md-sidenav/nav/a[2]/span"));
                 challengeBtn.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement createButton = wd.findElement(By.xpath("//button[@class=\\\"md-primary md-raised md-button md-ink-ripple\\\"]"));
+                Thread.Sleep(3000);
+                WebElement createButton = wd.findElement(By.XPath("//button[@class=\\\"md-primary md-raised md-button md-ink-ripple\\\"]"));
                 createButton.click();
             }
             catch (Exception e)
             {
-                System.out.println(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement surveyButton = wd.findElement(By.xpath(("/html/body/div[3]/md-dialog/div/div/section[2]/" + "section[2]/div[1]/section[1]/div/section[2]/section/div[2]")));
+                Thread.Sleep(3000);
+                WebElement surveyButton = wd.findElement(By.XPath(("/html/body/div[3]/md-dialog/div/div/section[2]/" + "section[2]/div[1]/section[1]/div/section[2]/section/div[2]")));
                 surveyButton.click();
             }
             catch (Exception e)
             {
-                System.out.println(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(1000);
-                WebElement surveyName = wd.findElement(By.xpath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[2]/section/div[3]" + "/md-input-container/div[1]/textarea"))));
+                Thread.Sleep(1000);
+                WebElement surveyName = wd.findElement(By.XPath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[2]/section/div[3]" + "/md-input-container/div[1]/textarea"))));
                 surveyName.click();
-                surveyName.sendKeys(("Regression Test " + App.nameByDate()));
+                surveyName.sendKeys(("Regression Test " + nameByDate()));
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(3000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(3000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(3000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            WebElement option1Input = wd.findElement(By.xpath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[5]/section[6]/div[2]" + "/div/div/div/ul[1]/li/ul/li/md-input-container/div[1]/textarea"))));
+            WebElement option1Input = wd.findElement(By.XPath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[5]/section[6]/div[2]" + "/div/div/div/ul[1]/li/ul/li/md-input-container/div[1]/textarea"))));
             option1Input.click();
-            option1Input.sendKeys(App.nameByDate());
-            WebElement option2Input = wd.findElement(By.xpath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[5]/section[6]/div[2]/div/div/div/ul[2]/li/ul/li" + "/md-input-container/div[1]/textarea"))));
+            option1Input.sendKeys(nameByDate());
+            WebElement option2Input = wd.findElement(By.XPath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[5]/section[6]/div[2]/div/div/div/ul[2]/li/ul/li" + "/md-input-container/div[1]/textarea"))));
             option2Input.click();
             option2Input.sendKeys("Incorrect");
             try
             {
-                Thread.sleep(3000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(3000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(1000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(1000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(2000);
-                WebElement challengeDescription = wd.findElement(By.xpath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[6]" + "/section/div[3]/div/md-input-container/div[1]/textarea"))));
+                Thread.Sleep(2000);
+                WebElement challengeDescription = wd.findElement(By.XPath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[6]" + "/section/div[3]/div/md-input-container/div[1]/textarea"))));
                 challengeDescription.click();
-                challengeDescription.sendKeys(("AUTO GENERATED CHALLENGE FOR REGRESSION TEST " + App.nameByDate()));
+                challengeDescription.sendKeys(("AUTO GENERATED CHALLENGE FOR REGRESSION TEST " + nameByDate()));
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(1000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(1000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            WebElement dropDown = wd.findElement(By.xpath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[7]/div[2]/div[1]/div[2]" + "/md-input-container/md-select/md-select-value/span[1]/div"))));
+            WebElement dropDown = wd.findElement(By.XPath(("/html/body/div[3]" + ("/md-dialog/div/div/section[2]/section[2]/div[7]/div[2]/div[1]/div[2]" + "/md-input-container/md-select/md-select-value/span[1]/div"))));
             dropDown.click();
-            WebElement allUsers = wd.findElement(By.xpath("/html/body/div[8]/md-select-menu/md-content/md-option[2]"));
+            WebElement allUsers = wd.findElement(By.XPath("/html/body/div[8]/md-select-menu/md-content/md-option[2]"));
             allUsers.click();
             try
             {
-                Thread.sleep(1000);
-                WebElement nextButton = wd.findElement(By.xpath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
+                Thread.Sleep(1000);
+                WebElement nextButton = wd.findElement(By.XPath(("/html/body/div[3]" + "/md-dialog/div/div/section[3]/div[2]/button")));
                 nextButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(1000);
-                WebElement savePublish = wd.findElement(By.xpath("/html/body/div[3]/md-dialog/div/div/section[2]/section[2]/div[8]/section[2]/div[1]"));
+                Thread.Sleep(1000);
+                WebElement savePublish = wd.findElement(By.XPath("/html/body/div[3]/md-dialog/div/div/section[2]/section[2]/div[8]/section[2]/div[1]"));
                 savePublish.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement submitBtn = wd.findElement(By.xpath("/html/body/div[3]/md-dialog/div/div/section[3]/div[3]/button/span"));
+                Thread.Sleep(3000);
+                WebElement submitBtn = wd.findElement(By.XPath("/html/body/div[3]/md-dialog/div/div/section[3]/div[3]/button/span"));
                 submitBtn.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            //         WebElement exitChallenge = wd.findElement(By.xpath("/html/body/div[3]/md-dialog/div/div/section[1]/span/i"));
+            //         WebElement exitChallenge = wd.findElement(By.XPath("/html/body/div[3]/md-dialog/div/div/section[1]/span/i"));
             //         exitChallenge.click();
             //         
             //         try{
-            //             //Thread.sleep(3000);     
-            //             WebElement exitYes = wd.findElement(By.xpath("/html/body/div[9]/md-dialog/md-dialog-actions/button[2]"));
+            //             //Thread.Sleep(3000);     
+            //             WebElement exitYes = wd.findElement(By.XPath("/html/body/div[9]/md-dialog/md-dialog-actions/button[2]"));
             //             exitYes.click();
             //             } catch(Exception e){
-            //             System.out.println("Exception caught: \n"); e.printStackTrace();}
+            //             Console.WriteLine("Exception caught: \n"); e.printStackTrace();}
         }
 
         public static void testFeed(WebDriver wd)
         {
             try
             {
-                Thread.sleep(3000);
-                WebElement feed = wd.findElement(By.xpath("/html/body/main-component/div/menu-component/md-sidenav/nav/a[7]"));
+                Thread.Sleep(3000);
+                WebElement feed = wd.findElement(By.XPath("/html/body/main-component/div/menu-component/md-sidenav/nav/a[7]"));
                 feed.click();
-                WebElement createButton = wd.findElement(By.xpath("/html/body/main-component/div/div/div/div/div[1]/div[1]/button"));
+                WebElement createButton = wd.findElement(By.XPath("/html/body/main-component/div/div/div/div/div[1]/div[1]/button"));
                 createButton.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement feedName = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[1]/input"));
+                Thread.Sleep(3000);
+                WebElement feedName = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[1]/input"));
                 feedName.click();
-                feedName.sendKeys(("Regression Test " + App.nameByDate()));
-                WebElement textOverlay = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[2]/input"));
+                feedName.sendKeys(("Regression Test " + nameByDate()));
+                WebElement textOverlay = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[2]/input"));
                 textOverlay.click();
-                textOverlay.sendKeys(App.nameByDate());
-                WebElement notificationText = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[3]/input"));
+                textOverlay.sendKeys(nameByDate());
+                WebElement notificationText = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[3]/input"));
                 notificationText.click();
-                notificationText.sendKeys(App.nameByDate());
+                notificationText.sendKeys(nameByDate());
             }
             catch (Exception e)
             {
-                System.out.println(e);
+                Console.WriteLine(e);
             }
 
-            WebElement dropDown = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[7]/div/md-select"));
+            WebElement dropDown = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[7]/div/md-select"));
             dropDown.click();
             try
             {
-                Thread.sleep(3000);
-                WebElement challengeOption = wd.findElement(By.xpath("/html/body/div[8]/md-select-menu/md-content/md-option[3]"));
+                Thread.Sleep(3000);
+                WebElement challengeOption = wd.findElement(By.XPath("/html/body/div[8]/md-select-menu/md-content/md-option[3]"));
                 challengeOption.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            WebElement dropDown2 = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[8]/md-select"));
+            WebElement dropDown2 = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[8]/md-select"));
             dropDown2.click();
             try
             {
-                Thread.sleep(3000);
-                WebElement allUsers = wd.findElement(By.xpath("/html/body/div[9]/md-select-menu/md-content/md-option[2]"));
+                Thread.Sleep(3000);
+                WebElement allUsers = wd.findElement(By.XPath("/html/body/div[9]/md-select-menu/md-content/md-option[2]"));
                 allUsers.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            WebElement directChallenge = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[7]/div/md-select[2]"));
+            WebElement directChallenge = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[7]/div/md-select[2]"));
             directChallenge.click();
             try
             {
-                Thread.sleep(3000);
-                WebElement releaseTest = wd.findElement(By.xpath("/html/body/div[10]/md-select-menu/md-content/md-option[1]"));
+                Thread.Sleep(3000);
+                WebElement releaseTest = wd.findElement(By.XPath("/html/body/div[10]/md-select-menu/md-content/md-option[1]"));
                 releaseTest.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            //         WebElement link = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[2]/div[7]/div/input"));
+            //         WebElement link = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[2]/div[7]/div/input"));
             //         link.click();
             //         link.sendKeys("https://socialladder.rkiapps.com/portal/#/challenges");
-            WebElement save = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[3]/button[1]"));
+            WebElement save = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[3]/button[1]"));
             save.click();
             try
             {
-                Thread.sleep(3000);
-                WebElement savePublish = wd.findElement(By.xpath("/html/body/div[7]/md-dialog/section/div[3]/button[2]"));
+                Thread.Sleep(3000);
+                WebElement savePublish = wd.findElement(By.XPath("/html/body/div[7]/md-dialog/section/div[3]/button[2]"));
                 savePublish.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
         }
@@ -405,64 +404,64 @@ namespace SeleniumSL_CS
         {
             try
             {
-                Thread.sleep(3000);
-                WebElement testReport = wd.findElement(By.xpath("/html/body/main-component/div/menu-component/md-sidenav/nav/a[4]"));
+                Thread.Sleep(3000);
+                WebElement testReport = wd.findElement(By.XPath("/html/body/main-component/div/menu-component/md-sidenav/nav/a[4]"));
                 testReport.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement selectReport = wd.findElement(By.xpath("/html/body/main-component/div/div/div/div/div[1]/div[1]/md-input-container/md-select"));
+                Thread.Sleep(3000);
+                WebElement selectReport = wd.findElement(By.XPath("/html/body/main-component/div/div/div/div/div[1]/div[1]/md-input-container/md-select"));
                 selectReport.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement option1 = wd.findElement(By.xpath("/html/body/div[7]/md-select-menu/md-content/md-option[1]"));
+                Thread.Sleep(3000);
+                WebElement option1 = wd.findElement(By.XPath("/html/body/div[7]/md-select-menu/md-content/md-option[1]"));
                 option1.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement save = wd.findElement(By.xpath(("/html/body/main-component/div/div/div/div/div[1]/div[2]" + "/section[1]/button")));
+                Thread.Sleep(3000);
+                WebElement save = wd.findElement(By.XPath(("/html/body/main-component/div/div/div/div/div[1]/div[2]" + "/section[1]/button")));
                 save.click();
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
             try
             {
-                Thread.sleep(3000);
-                WebElement reportName = wd.findElement(By.xpath(("/html/body/div[8]/md-dialog/div/" + "md-content/md-input-container[1]/div[1]/textarea")));
+                Thread.Sleep(3000);
+                WebElement reportName = wd.findElement(By.XPath(("/html/body/div[8]/md-dialog/div/" + "md-content/md-input-container[1]/div[1]/textarea")));
                 reportName.click();
-                reportName.sendKeys(("Regression Test " + App.nameByDate()));
-                WebElement reportDesc = wd.findElement(By.xpath(("/html/body/div[8]/md-dialog/div/" + "md-content/md-input-container[2]/div[1]/textarea")));
+                reportName.sendKeys(("Regression Test " + nameByDate()));
+                WebElement reportDesc = wd.findElement(By.XPath(("/html/body/div[8]/md-dialog/div/" + "md-content/md-input-container[2]/div[1]/textarea")));
                 reportDesc.click();
-                reportDesc.sendKeys(("Regression Test " + App.nameByDate()));
+                reportDesc.sendKeys(("Regression Test " + nameByDate()));
             }
             catch (Exception e)
             {
-                System.out.print(e);
+                Console.WriteLine(e);
             }
 
-            WebElement saveBtn = wd.findElement(By.xpath(("/html/body/div[8]" + "/md-dialog/div/md-dialog-actions/button[1]")));
+            WebElement saveBtn = wd.findElement(By.XPath(("/html/body/div[8]" + "/md-dialog/div/md-dialog-actions/button[1]")));
             saveBtn.click();
         }
     }
