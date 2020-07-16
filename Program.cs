@@ -1,4 +1,7 @@
 ﻿using System;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support;
+
 
 namespace SeleniumSL_CS
 {
