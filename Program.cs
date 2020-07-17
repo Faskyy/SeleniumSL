@@ -4,6 +4,7 @@ using System.IO;
 using OpenQA.Selenium;
 using System.Threading;
 
+
 //resolved all non-selenium syntax errors for Java > C#
 
 namespace SeleniumSL_CS
@@ -35,7 +36,7 @@ namespace SeleniumSL_CS
             Console.WriteLine("++ Test initialized at " + GetTime());
 
             //NOTE - MUST INPUT LOCAL LOCATION OF CHROMEDRIVER DIRECTORY
-            IWebDriver driver = new ChromeDriver("C:\\Users\\Patrick\\source\\repos\\SeleniumSL_CS\\SeleniumSL_CS\\chromedriver");
+            IWebDriver driver = new ChromeDriver("C:\\Users\\Patrick\\source\\repos\\SeleniumSL_CS\\SeleniumSL_CS");
 
             // add 30 sec implicit wait for variable connection speeds
             // driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -65,11 +66,12 @@ namespace SeleniumSL_CS
             try
             {                
                 IWebElement searchField = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[1]/div/div[2]/input"));
-                IWebElement searchButton = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[3]/center/input[1]"));
+               // IWebElement searchButton = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[3]/center/input[1]"));
                 searchField.Click();
                 searchField.SendKeys("socialladder");
-                searchButton.Click();
-                Thread.Sleep(500);
+                Thread.Sleep(2000);
+                searchField.SendKeys(Keys.Enter);
+               // searchButton.Click();
             }
             catch (Exception e)
             {
@@ -79,7 +81,7 @@ namespace SeleniumSL_CS
             WriteToLog("Searching Google for \\\"socialladder\\\".");
             try
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
                 IWebElement slSiteGoogle = wd.FindElement(By.PartialLinkText("SocialLadder |"));
                 slSiteGoogle.Click();
             }
