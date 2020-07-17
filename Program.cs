@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using OpenQA.Selenium;
@@ -36,7 +36,7 @@ namespace SeleniumSL_CS
             Console.WriteLine("++ Test initialized at " + GetTime());
 
             //NOTE - MUST INPUT LOCAL LOCATION OF CHROMEDRIVER DIRECTORY
-            IWebDriver driver = new ChromeDriver("C:\\Users\\Patrick\\source\\repos\\SeleniumSL_CS\\SeleniumSL_CS");
+            IWebDriver driver = new ChromeDriver("/Users/fahdksara/Desktop/SeleniumTest/Installers/Drivers");
 
             // add 30 sec implicit wait for variable connection speeds
             // driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -64,14 +64,15 @@ namespace SeleniumSL_CS
             wd.Navigate().GoToUrl(@"http://google.com");
             WriteToLog("Browser loaded to www.google.com.");
             try
-            {                
+            {
                 IWebElement searchField = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[1]/div/div[2]/input"));
                 searchField.Click();
                 searchField.SendKeys("socialladder");
                 Thread.Sleep(2000);
                 searchField.SendKeys(Keys.Enter);
-               
+
             }
+
             catch (Exception e)
             {
                 Console.WriteLine(e);
