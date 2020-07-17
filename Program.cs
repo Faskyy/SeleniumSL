@@ -16,12 +16,12 @@ namespace SeleniumSL_CS
         //  return current date/time in readable format
         public static string GetTime()
         {
-            return DateTime.Now.ToString("yyyyMMdd hh:mm:ss");
+            return DateTime.Now.ToString("MMddyyyy hh:mm:ss");
         }
 
         public static string NameByDate()
         {
-            return DateTime.Now.ToString("yyyyMMdd");
+            return DateTime.Now.ToString("MMddyyyy");
         }
 
         //  append string to log
@@ -66,12 +66,11 @@ namespace SeleniumSL_CS
             try
             {                
                 IWebElement searchField = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[1]/div/div[2]/input"));
-               // IWebElement searchButton = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[3]/center/input[1]"));
                 searchField.Click();
                 searchField.SendKeys("socialladder");
                 Thread.Sleep(2000);
                 searchField.SendKeys(Keys.Enter);
-               // searchButton.Click();
+               
             }
             catch (Exception e)
             {
@@ -139,7 +138,7 @@ namespace SeleniumSL_CS
             try
             {
                 Thread.Sleep(3000);
-                IWebElement createButton = wd.FindElement(By.XPath("//button[@class=\\\"md-primary md-raised md-button md-ink-ripple\\\"]"));
+                IWebElement createButton = wd.FindElement(By.XPath("/html/body/main-component/div/div/div/div/section/div[1]/button"));
                 createButton.Click();
             }
             catch (Exception e)
