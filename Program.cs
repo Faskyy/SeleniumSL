@@ -12,11 +12,6 @@ namespace SeleniumSL_CS
     {
         static string dataLog = "";
 
-        static readonly string currentDirectory = Directory.GetCurrentDirectory();
-
-        // NOTE - CONFIGURE BEFORE USE!! MAC = 1, PC = 2
-        //static int userNum = 1;
-
         //  return current date/time in readable format
         public static string GetTime()
         {
@@ -38,19 +33,8 @@ namespace SeleniumSL_CS
         {
 
             Console.WriteLine("++ Test initialized at " + GetTime());
-            //  configure driver executable, initialize
-            /*
-            if ((userNum == 1))
-            {
-                driver.setProperty("webdriver.chrome.driver", "/Users/fahdksara/Desktop/SeleniumTest/Installers/Drivers/chromedriver");
-            }
 
-            if ((userNum == 2))
-            {
-                System.setProperty("webdriver.chrome.driver", (currentDirectory + "\\\\src\\\\chromedriver.exe"));
-            }
-            */
-
+            //NOTE - MUST INPUT LOCAL LOCATION OF CHROMEDRIVER DIRECTORY
             IWebDriver driver = new ChromeDriver("C:\\Users\\Patrick\\source\\repos\\SeleniumSL_CS\\SeleniumSL_CS\\chromedriver");
 
             // add 30 sec implicit wait for variable connection speeds
@@ -79,13 +63,13 @@ namespace SeleniumSL_CS
             wd.Navigate().GoToUrl(@"http://google.com");
             WriteToLog("Browser loaded to www.google.com.");
             try
-            {
-                Thread.Sleep(3000);
-                IWebElement searchField = wd.FindElement(By.XPath("//*[@id=\\\"tsf\\\"]/div[2]/div[1]/div[1]/div/div[2]/input"));
-                IWebElement searchButton = wd.FindElement(By.XPath("//*[@id=\\\"tsf\\\"]/div[2]/div[1]/div[2]/div[2]/div[2]/center/input[1]"));
+            {                
+                IWebElement searchField = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[1]/div/div[2]/input"));
+                IWebElement searchButton = wd.FindElement(By.XPath("/html/body/div/div[3]/form/div[2]/div[1]/div[3]/center/input[1]"));
                 searchField.Click();
                 searchField.SendKeys("socialladder");
                 searchButton.Click();
+                Thread.Sleep(500);
             }
             catch (Exception e)
             {
@@ -119,8 +103,10 @@ namespace SeleniumSL_CS
             IWebElement emailInput = wd.FindElement(By.Id("input_0"));
             emailInput.Click();
             // manually input username
-            emailInput.SendKeys("onebulletboy@socialladdercom");
+            emailInput.SendKeys("onebulletboy@socialladderapp.com");
+            Thread.Sleep(500);
             IWebElement passwordInput = wd.FindElement(By.Id("input_1"));
+            Thread.Sleep(500);
             passwordInput.Click();
             // manually input password
             passwordInput.SendKeys("social33!");
